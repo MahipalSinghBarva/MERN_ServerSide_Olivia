@@ -6,20 +6,24 @@ const errorMiddleWare = require('./middleware/error')
 const cookieParser = require("cookie-parser")
 const dotenv = require('dotenv')
 const path = require('path')
+const helmet = require('helmet');
 
 app.use(express.json({ limit: '1000mb' }))
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended:true, limit:"1000mb"}))
 app.use(fileUpload())
 app.use(bodyParser.json({ limit: '1000mb' }));
+app.use(helmet())
 
-// if(process.env.NODE_ENV !== "PRODUCTION"){
-//     require("dotenv").config({path:'backend/config/config.env'})
-// }
+if(process.env.NODE_ENV !== "PRODUCTION"){
+    require("dotenv").config({path:'./.env'})
+}
 
-dotenv.config({path:'.env'})
+const hostname = "192.168.31.131"
 
-app.use(express.static("build"))
+// dotenv.config({path:'.env'})
+
+// app.use(express.static("../frontend/build"))
 
 // route import
 const product = require("./route/productRoute")
@@ -36,7 +40,7 @@ app.use("/api/v1", payment)
 app.use(express.static(path.join(__dirname, "./build")))
 
 app.get("*", (req, res)=>{
-    res.sendFile(path.resolve(__dirname, "./build/index.html"))
+    res.sendFile(path.resolve(__dirname, "./build"))
 })
 
 // middleware for error
