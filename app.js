@@ -18,7 +18,7 @@ app.use(bodyParser.json({ limit: '1000mb' }));
 app.use(helmet())
 app.use(cors())
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', 'https://olivia-estore.netlify.app/');
     
     next();
   });
