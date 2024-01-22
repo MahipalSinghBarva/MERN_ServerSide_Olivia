@@ -5,6 +5,7 @@ const cloudinary = require("cloudinary");
 const path = require("path");
 const https = require('https');
 const fs = require('fs');
+const express = require('express')
 
 
 // handling uncaught execption
@@ -14,7 +15,7 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-// const hostname = "0.0.0.0"
+
 
 if(process.env.NODE_ENV !== "PRODUCTION"){
     require("dotenv").config({path:'./.env'})
@@ -32,13 +33,20 @@ cloudinary.config({
 });
 
 
-// app.listen(process.env.PORT,hostname, () => {
-//   console.log(`Server is working on PORT:${hostname}:${process.env.PORT}`);
-// });
+
+
+app.use(express.static(path.join(__dirname, "./build")))
+
+app.get("*", (req, res)=>{
+    res.sendFile(path.resolve(__dirname, "./build"))
+})
+
+
 
 app.listen(process.env.PORT,()=>{
     console.log(`Server is working on PORT:${process.env.PORT}`);
 })
+
 
 // unhandle promise rejection
 process.on("unhandledRejection", (err) => {

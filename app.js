@@ -19,7 +19,7 @@ if(process.env.NODE_ENV !== "PRODUCTION"){
     require("dotenv").config({path:'./.env'})
 }
 
-const hostname = "192.168.31.131"
+// const hostname = "192.168.31.131"
 
 // dotenv.config({path:'.env'})
 
@@ -42,6 +42,12 @@ app.use(express.static(path.join(__dirname, "./build")))
 app.get("*", (req, res)=>{
     res.sendFile(path.resolve(__dirname, "./build"))
 })
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    
+    next();
+  });
 
 // middleware for error
 app.use(errorMiddleWare)
